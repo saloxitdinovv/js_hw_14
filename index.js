@@ -83,22 +83,24 @@ let companies = [
 
 let a = [] /* успешные  */
 let b = [] /* неуспешные */
-for(businessmans of companies) {
+for (businessmans of companies) {
     businessmans.expensesPerMonth = 0
 
-    for(expense of businessmans.expenses) {
+    for (expense of businessmans.expenses) {
         businessmans.expensesPerMonth += expense.total / 12
+        businessmans.expensesPerMonth = Math.round(businessmans.expensesPerMonth)
     }
-    businessmans.expensesPerMonth = Math.round(businessmans.expensesPerMonth)
-    let taxExpense = Math.round(businessmans.tax * (businessmans.budget / 12) / 100);
-    let totalExpenses = businessmans.expensesPerMonth + taxExpense
-    let total = businessmans.budget - totalExpenses
-    if(total > 0) {
-        a.push(total)
+
+    let totalExpenses = Math.round(
+        businessmans.budget / 100 * businessmans.tax / 12 + businessmans.expensesPerMonth
+    )
+    
+    let profit = Math.round(businessmans.budget / 12 - totalExpenses)
+    
+    if(profit > 0) {
+        a.push(businessmans.name)
     } else {
-        b.push(total)
+        b.push(businessmans.name)
     }
-    let profit = businessmans.budget - total
-    console.log(`+${profit}`);
+    console.log(profit);
 }
-console.log(a,b);
